@@ -25,18 +25,17 @@ How the test proved it: We sent a request from our computer to the project's pub
 Why this is important: It proves the project isn't just configuration files sitting on a computer — the components were actually deployed in the cloud and can receive real network traffic from the internet. 
 
 ## Setting It Up
-screenshots/Creating_Nodes.png 
+![Creating Nodes](screenshots/Creating_Nodes.png)
 
 ## Creating The Kubernetes Cluster 
 Command: gcloud container clusters create cnf-project --num-nodes=3 --zone=northamerica-northeast2-a --machine-type=e2-small 
-screenshots/Create_Cluster.png
+![Create Cluster](screenshots/Create_Cluster.png)
 
 ## Then Applying the YAML Files
-screenshots//Applying_the_YAML_Files.png
+![Applying the YAML Files](screenshots/Applying_the_YAML_Files.png)
 
 ## Testing Our Live Service Chain
-screenshots/Verifying_IT_Works.png 
-
+![Verifying It Works](screenshots/Verifying_IT_Works.png)
 
 ## What This Demonstrates
 
@@ -45,7 +44,7 @@ screenshots/Verifying_IT_Works.png
 - Kubernetes automatically replaces failed containers
 
 Resilience / Self-Healing Test: We first confirmed that two firewall pods were running. We then manually deleted one firewall pod using kubectl delete pod. Because the deployment was configured to always maintain two firewall replicas, Kubernetes detected that one was missing and automatically created a new replacement pod with a new name. Within seconds, the replacement pod was running and the firewall deployment was back to two healthy pods without us manually recreating anything. 
-screenshots/Resiliance_Demonstration.png
+![Resilience Demonstration](screenshots/Resiliance_Demonstration.png)
 
 
 ### Scalability  
@@ -56,18 +55,21 @@ Scalability Test: The firewall deployment was scaled from 5 running pods back do
 Now imagine a huge increase in traffic whether that's legitimate traffic or potentially something like a DDoS-style traffic flood. Two firewall instances could become overloaded. If the firewall can't inspect/process packets quickly enough, your security layer becomes a bottleneck.
 
 Scaling Up
-screenshots/Scaling_Demo.png 
+![Scaling Demo](screenshots/Scaling_Demo.png)
 
 Scaling Back Down
-screenshots/Scale_Back.png
+![Scale Back](screenshots/Scale_Back.png) 
+
 
 ### Agility
 - Rolling updates with zero downtime
 - Single command deployment vs hours of VM provisioning
 
 The cybersecurity relevance is safe patching and maintenance: security/network services often need updates for bug fixes or vulnerabilities, and Kubernetes can replace instances gradually instead of taking the whole service offline at once. 
-screenshots/Agility_Demonstration.png
+![Agility Demonstration](screenshots/Agility_Demonstration.png) 
 
+### Presenting Final Evidence
+![Final Deployment Evidence](screenshots/Presenting_Final_Evidence.png)
 
 ## Tech Stack
 - Google Kubernetes Engine (GKE)
