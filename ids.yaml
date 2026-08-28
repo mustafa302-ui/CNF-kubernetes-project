@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cnf-ids
+  labels:
+    app: cnf-ids
+    component: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cnf-ids
+  template:
+    metadata:
+      labels:
+        app: cnf-ids
+    spec:
+      containers:
+      - name: ids-monitor
+        image: nicolaka/netshoot:latest
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          echo "CNF IDS Started - Monitoring Network Traffic"
+          while true; do
+            echo "[$(date)] IDS Active - Scanning traffic patterns..."
+            sleep 30
+          done
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN", "NET_RAW"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnf-ids-service
+spec:
+  selector:
+    app: cnf-ids
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP

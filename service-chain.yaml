@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cnf-service-chain-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cnf-loadbalancer
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - ports:
+    - protocol: TCP
+      port: 80
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: cnf-firewall
+    ports:
+    - protocol: TCP
+      port: 3128
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cnf-firewall-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: cnf-firewall
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: cnf-loadbalancer
+    ports:
+    - protocol: TCP
+      port: 3128
+  - from:
+    - podSelector:
+        matchLabels:
+          app: cnf-ids
